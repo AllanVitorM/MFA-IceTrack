@@ -1,0 +1,53 @@
+/* Simple custom styles complementing Bootstrap */
+body { padding-top: 70px; background: #feffff; }
+.navbar-brand { font-weight: 700; }
+.card-stats { border-left: 4px solid #133c67; }
+.table-users td, .table-users th { vertical-align: middle; }
+.footer { padding: 20px 0; text-align:center; color:#6b7280;}
+.btn-login {
+    background-color: #4b87ae;
+    color:white;
+}
+.btn-login:hover{
+    background-color: #133c67;
+    color: white;
+}
+.btn-register{
+    background-color: #4b87ae;
+    color:white;
+}
+
+.btn-register:hover{
+    background-color: #133c67;
+    color: white;
+}
+
+.btn-MFA{
+    background-color: #4b87ae;
+    color:white;
+}
+
+.btn-MFA:hover{
+    background-color: #133c67;
+    color: white;
+}
+.btn-index-register{
+    background-color: #4b87ae;
+    color:white;
+}
+.btn-index-register:hover{
+    background-color: #133c67;
+    color: white;
+}
+
+.btn-index-login{
+    border: #4b87ae 2px solid;
+    color:#133c67;
+}
+
+.btn-index-login:hover{
+    background-color: #133c67;
+    color: white;
+}
+
+#feffff #47b4da #4b87ae #aadae8 #133c67

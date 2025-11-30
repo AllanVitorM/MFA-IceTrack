@@ -1,0 +1,170 @@
+{% extends "base.html" %} {% block content %}
+<div class="row mb-4">
+  <div class="col-md-8">
+    <h2>Dashboard</h2>
+    <p class="text-muted">
+      Bem-vindo, <strong>{{ session.get('username') }}</strong>
+    </p>
+  </div>
+  <div class="col-md-4 text-end">
+    <a class="btn btn-outline-secondary" href="/logout">Sair</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card card-stats p-3 shadow-sm">
+      <h5>Total de usuários</h5>
+      <h2>{{ total_users }}</h2>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-stats p-3 shadow-sm">
+      <h5>Sessões ativas</h5>
+      <h2>{{ active_sessions }}</h2>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-stats p-3 shadow-sm">
+      <h5>Últimos logins</h5>
+      <ul class="list-unstyled mb-0">
+        {% for user in recent %}
+        <li>{{ user.username }} — {{ user.last_login|shorttime }}</li>
+        {% else %}
+        <li>Nenhum login recente</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5>Usuários cadastrados</h5>
+        <table class="table table-users table-striped mt-3">
+          <thead>
+            <tr>
+              <th>Usuário</th>
+              <th>Registrado em</th>
+              <th>Último login</th>
+              <th>Logins</th>
+              <th>Ativo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in recent %}
+            <tr>
+              <td>{{ user.username }}</td>
+              <td>{{ user.registered_at|shorttime }}</td>
+              <td>{{ user.last_login|shorttime }}</td>
+              <td>{{ user.login_count }}</td>
+              <td>{% if user.logged_in %}✅{% else %}—{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card shadow-sm p-3">
+            <h5>Temperatura ao longo do tempo</h5>
+            <canvas id="tempChart"></canvas>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card shadow-sm p-3">
+            <h5>Umidade ao longo do tempo</h5>
+            <canvas id="humidityChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <div class="card shadow-sm p-3">
+            <h5>Temperatura x Umidade</h5>
+            <canvas id="scatterChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div id="map" style="height: 400px; width: 100%; margin-top: 20px"></div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const timestamps = {{ timestamps | tojson }};
+    const temperaturas = {{ temperaturas | tojson }};
+    const umidades = {{ umidades | tojson }};
+    const scatterData = {{ scatter | tojson }};
+    const latitudes = {{ latitudes | tojson }};
+    const longitudes = {{ longitudes | tojson }};
+    const coordenadas = {{ coordenadas | tojson }};
+
+    const startLat = coordenadas.length ? coordenadas[0].latitude : 0;
+    const startLng = coordenadas.length ? coordenadas[0].longitude : 0;
+
+    const map = L.map('map').setView([startLat, startLng], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+    }).addTo(map);
+
+    coordenadas.forEach(c => {
+        L.marker([c.latitude, c.longitude]).addTo(map);
+    });
+
+    if (coordenadas.length > 1) {
+        const bounds = coordenadas.map(c => [c.latitude, c.longitude]);
+        map.fitBounds(bounds);
+    }
+
+    new Chart(document.getElementById('tempChart'), {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [{
+          label: 'Temperatura (°C)',
+          data: temperaturas,
+          borderWidth: 2,
+          borderColor: 'rgb(255, 99, 132)',
+          tension: 0.3
+        }]
+      }
+    });
+
+    new Chart(document.getElementById('humidityChart'), {
+      type: 'line',
+      data: {
+        labels: timestamps,
+        datasets: [{
+          label: 'Umidade (%)',
+          data: umidades,
+          borderWidth: 2,
+          borderColor: 'rgb(54, 162, 235)',
+          tension: 0.3
+        }]
+      }
+    });
+
+    new Chart(document.getElementById('scatterChart'), {
+      type: 'scatter',
+      data: {
+        datasets: [{
+          label: 'Temp x Umidade',
+          data: scatterData,
+          backgroundColor: 'rgb(75, 192, 192)'
+        }]
+      },
+      options: {
+        scales: {
+          x: { title: { display: true, text: "Temperatura (°C)" } },
+          y: { title: { display: true, text: "Umidade (%)" } }
+        }
+      }
+    });
+  </script>
+</div>
+{% endblock %}
