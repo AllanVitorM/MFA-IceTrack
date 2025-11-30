@@ -69,7 +69,7 @@ O projeto foi desenvolvido com foco em métricas de qualidade rigorosas para gar
 
 A aplicação web (Dashboard) é construída com **Flask** e incorpora **Multi-Factor Authentication (MFA)** para garantir a segurança do acesso aos dados.
 
-### ⚙️ Tecnologias Utilizadas
+### Tecnologias Utilizadas
 
 *   **Backend:** Python, Flask, PyMongo (MongoDB), Pandas.
 *   **Segurança:** PyOTP (MFA), Werkzeug Security.
@@ -97,7 +97,7 @@ A aplicação web (Dashboard) é construída com **Flask** e incorpora **Multi-F
 └── requirements.txt
 ```
 
-### 📦 Dependências (`requirements.txt`)
+### Dependências (`requirements.txt`)
 
 ```
 Flask>=2.0
