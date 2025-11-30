@@ -4,3 +4,4 @@ qrcode[pil]
 gunicorn
 pymongo
 python-dotenv
+pandas
