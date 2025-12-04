@@ -46,7 +46,7 @@ O projeto Ice Track é estruturado em três camadas principais que garantem a co
     *   **Função:** Receber, processar, armazenar e disponibilizar os dados coletados.
 
 3.  **Front-end (Visualização e Interação)**
-    *   **Tecnologia:** **React.ts** (mencionado na arquitetura) e **Flask** (para a aplicação web e MFA).
+    *   **Tecnologia:** **HTML** (para exibição dos dashboards), **Flask** (para a aplicação web e MFA) **Leaflet** (para aplicação do mapa de rastremento).
     *   **Função:** Exibição do dashboard com os dados processados e um mapa de rastreamento em tempo real.
 
 ---
